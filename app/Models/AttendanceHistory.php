@@ -11,6 +11,7 @@ class AttendanceHistory extends Model
     protected $table = 'attendance_histories';
 
     protected $fillable = [
+        'staff_id',
         'member_id',
         'entry_timestamp',
         'points_deducted',

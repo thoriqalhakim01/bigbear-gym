@@ -62,42 +62,46 @@ export default function PackageListing({ flash, packages }: Props) {
                 </div>
 
                 <div className="flex flex-col space-y-4">
-                    <div className="rounded-md border">
-                        <div className="relative w-full overflow-auto">
-                            <table className="w-full caption-bottom text-sm">
-                                <thead className="[&_tr]:border-b">
-                                    <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">#</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Points</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Price</th>
-                                        <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="[&_tr:last-child]:border-0">
-                                    {packages.data.map((item, index) => (
-                                        <tr key={item.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td className="p-4 align-middle">{packages.from + index}</td>
-                                            <td className="p-4 align-middle">{item.name}</td>
-                                            <td className="p-4 align-middle">{item.points}</td>
-                                            <td className="p-4 align-middle">
-                                                {item.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-                                            </td>
-                                            <td className="flex items-center justify-end gap-2 p-4 align-middle">
-                                                <EditPackage item={item} />
-                                                <DeletePackage id={item.id} />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {packages.data.length === 0 && (
-                                        <tr>
-                                            <td colSpan={5} className="p-4 text-center text-muted-foreground">
-                                                No package found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                    <div className="flex flex-col">
+                        <div className="-m-1.5 overflow-x-auto">
+                            <div className="inline-block min-w-full p-1.5 align-middle">
+                                <div className="overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-neutral-700 dark:shadow-gray-900">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <thead className="bg-gray-50 dark:bg-neutral-700">
+                                            <tr className="text-sm">
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">#</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Points</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Price</th>
+                                                <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-200 text-sm dark:divide-neutral-700">
+                                            {packages.data.map((item, index) => (
+                                                <tr key={item.id} className="text-sm">
+                                                    <td className="p-4 align-middle">{packages.from + index}</td>
+                                                    <td className="p-4 align-middle">{item.name}</td>
+                                                    <td className="p-4 align-middle">{item.points}</td>
+                                                    <td className="p-4 align-middle">
+                                                        {item.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                                                    </td>
+                                                    <td className="flex items-center justify-end gap-2 p-4 align-middle">
+                                                        <EditPackage item={item} />
+                                                        <DeletePackage id={item.id} />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {packages.data.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={5} className="p-4 text-center text-muted-foreground">
+                                                        No package found
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center justify-between">

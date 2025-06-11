@@ -380,70 +380,86 @@ export default function MemberListing({ flash, members, filters }: Props) {
                         </div>
                     )}
 
-                    {/* Table */}
-                    <div className="rounded-md border">
-                        <div className="w-fulloverflow-auto relative">
-                            <table className="w-full caption-bottom text-sm">
-                                <thead className="[&_tr]:border-b">
-                                    <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">RFID UID</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Phone</th>
-                                        <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Status</th>
-                                        <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Points</th>
-                                        <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="[&_tr:last-child]:border-0">
-                                    {members.data.map((member) => (
-                                        <tr key={member.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td className="p-4 align-middle">{member.full_name}</td>
-                                            <td className="p-4 align-middle">{member.rfid_uid ?? '-'}</td>
-                                            <td className="p-4 align-middle">{member.email}</td>
-                                            <td className="p-4 align-middle">{member.phone}</td>
-                                            <td className="p-4 text-center align-middle">
-                                                {member.is_member ? (
-                                                    <Badge variant={'secondary'} className="bg-green-600 px-2 py-1 text-green-100 dark:bg-green-600">
-                                                        Active Member
-                                                    </Badge>
-                                                ) : (
-                                                    <Badge variant={'secondary'} className="bg-red-600 px-2 py-1 text-red-100 dark:bg-red-600">
-                                                        Non-Member
-                                                    </Badge>
-                                                )}
-                                            </td>
-                                            <td className="p-4 text-center align-middle">
-                                                {member.is_member ? <Badge variant="secondary">{member.points?.balance ?? 0}</Badge> : <span>-</span>}
-                                            </td>
-                                            <td className="p-4 text-right align-middle">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost">
-                                                            <MoreVertical />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href={route('members.show', { id: member.id })} className="flex items-center gap-1">
-                                                                <BookUser />
-                                                                <span>View Details</span>
-                                                            </Link>
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {members.data.length === 0 && (
-                                        <tr>
-                                            <td colSpan={6} className="p-4 text-center text-muted-foreground">
-                                                No members found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                    <div className="flex flex-col">
+                        <div className="-m-1.5 overflow-x-auto">
+                            <div className="inline-block min-w-full p-1.5 align-middle">
+                                <div className="overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-neutral-700 dark:shadow-gray-900">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <thead className="bg-gray-50 dark:bg-neutral-700">
+                                            <tr className="text-sm">
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">RFID UID</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Phone</th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Status</th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Points</th>
+                                                <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
+                                            {members.data.map((member) => (
+                                                <tr key={member.id} className="text-sm">
+                                                    <td className="p-4 align-middle">{member.full_name}</td>
+                                                    <td className="p-4 align-middle">{member.rfid_uid ?? '-'}</td>
+                                                    <td className="p-4 align-middle">{member.email}</td>
+                                                    <td className="p-4 align-middle">{member.phone}</td>
+                                                    <td className="p-4 text-center align-middle">
+                                                        {member.is_member ? (
+                                                            <Badge
+                                                                variant={'secondary'}
+                                                                className="bg-green-600 px-2 py-1 text-green-100 dark:bg-green-600"
+                                                            >
+                                                                Active Member
+                                                            </Badge>
+                                                        ) : (
+                                                            <Badge
+                                                                variant={'secondary'}
+                                                                className="bg-red-600 px-2 py-1 text-red-100 dark:bg-red-600"
+                                                            >
+                                                                Non-Member
+                                                            </Badge>
+                                                        )}
+                                                    </td>
+                                                    <td className="p-4 text-center align-middle">
+                                                        {member.is_member ? (
+                                                            <Badge variant="secondary">{member.points?.balance ?? 0}</Badge>
+                                                        ) : (
+                                                            <span>-</span>
+                                                        )}
+                                                    </td>
+                                                    <td className="p-4 text-right align-middle">
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button variant="ghost">
+                                                                    <MoreVertical />
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end">
+                                                                <DropdownMenuItem asChild>
+                                                                    <Link
+                                                                        href={route('members.show', { id: member.id })}
+                                                                        className="flex items-center gap-1"
+                                                                    >
+                                                                        <BookUser />
+                                                                        <span>View Details</span>
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {members.data.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={6} className="p-4 text-center text-muted-foreground">
+                                                        No members found
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center justify-between">

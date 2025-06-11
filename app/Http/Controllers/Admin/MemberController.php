@@ -141,9 +141,12 @@ class MemberController extends Controller
     {
         $member = Member::with(['points', 'transactions', 'history'])->findOrFail($id);
 
+        $histories = $member->history()->paginate(12)->withQueryString();
+
         return Inertia::render('admin/members/Show', [
-            'member' => $member,
-            'flash'  => [
+            'member'    => $member,
+            'histories' => $histories,
+            'flash'     => [
                 'success' => session('success'),
                 'error'   => session('error'),
             ],

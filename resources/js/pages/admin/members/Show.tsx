@@ -1,22 +1,32 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { Member, type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { PencilLine } from 'lucide-react';
+import { AttendanceHistory, Member, type BreadcrumbItem } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
+import { ChevronLeft, ChevronRight, PencilLine } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import DeleteMember from './_components/DeleteMember';
 
 type Props = {
     member: Member;
+    histories: {
+        data: AttendanceHistory[];
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+        from: number;
+        to: number;
+    };
     flash?: {
         success?: string;
         error?: string;
     };
 };
 
-export default function ShowMember({ member, flash }: Props) {
+export default function ShowMember({ member, histories, flash }: Props) {
+    console.log(histories);
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Members',
@@ -35,6 +45,17 @@ export default function ShowMember({ member, flash }: Props) {
             toast.error(flash.error);
         }
     }, [flash]);
+
+    const handlePageChange = (page: number) => {
+        const params: any = {
+            page,
+        };
+
+        router.get(route('members.show', member.id), params, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -84,72 +105,80 @@ export default function ShowMember({ member, flash }: Props) {
                 </div>
                 <div className="flex w-full flex-1 flex-col space-y-4">
                     <p className="font-semibold">History</p>
-                    <div className="rounded-md border">
-                        <div className="w-fulloverflow-auto relative">
-                            <table className="w-full caption-bottom text-sm">
-                                <thead className="[&_tr]:border-b">
-                                    <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">RFID UID</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Attendance Date</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Point Deducted</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="[&_tr:last-child]:border-0">
-                                    {member.history?.map((item) => (
-                                        <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td className="p-4 align-middle">{member.rfid_uid}</td>
-                                            <td className="p-4 align-middle">{member.full_name}</td>
-                                            <td className="p-4 align-middle">{item.entry_timestamp}</td>
-                                            <td className="p-4 align-middle">{item.points_deducted}</td>
-                                        </tr>
-                                    ))}
-                                    {member.history?.length === 0 && (
-                                        <tr>
-                                            <td colSpan={6} className="p-4 text-center text-muted-foreground">
-                                                No history found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                    <div className="flex flex-col">
+                        <div className="-m-1.5 overflow-x-auto">
+                            <div className="inline-block min-w-full p-1.5 align-middle">
+                                <div className="overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-neutral-700 dark:shadow-gray-900">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <thead className="bg-gray-50 dark:bg-neutral-700">
+                                            <tr className="text-sm">
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">RFID UID</th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">
+                                                    Attendance Date
+                                                </th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">
+                                                    Point Deducted
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-200 text-sm dark:divide-neutral-700">
+                                            {histories.data.map((item) => (
+                                                <tr key={item.id} className="text-sm">
+                                                    <td className="p-4 align-middle">{member.rfid_uid}</td>
+                                                    <td className="p-4 align-middle">{member.full_name}</td>
+                                                    <td className="p-4 text-center align-middle">{item.entry_timestamp}</td>
+                                                    <td className="p-4 text-center align-middle">{item.points_deducted}</td>
+                                                </tr>
+                                            ))}
+                                            {histories.data.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={6} className="p-4 text-center text-muted-foreground">
+                                                        No history found
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {/* <div className="flex items-center justify-between">
-                        <div className="text-muted-foreground text-sm">
-                            Showing {members.from} to {members.to} of {members.total} results
-                        </div>{' '}
+                    <div className="flex items-center justify-between">
+                        <div className="text-sm text-muted-foreground">
+                            Showing {histories.from} to {histories.to} of {histories.total} results
+                        </div>
                         <div className="flex items-center space-x-2">
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => handlePageChange(members.current_page - 1)}
-                                disabled={members.current_page === 1}
+                                onClick={() => handlePageChange(histories.current_page - 1)}
+                                disabled={histories.current_page === 1}
                             >
                                 <ChevronLeft className="h-4 w-4" />
-                            </Button>{' '}
+                            </Button>
                             <div className="flex items-center space-x-1">
-                                {Array.from({ length: members.last_page }, (_, i) => i + 1).map((page) => (
+                                {Array.from({ length: histories.last_page }, (_, i) => i + 1).map((page) => (
                                     <Button
                                         key={page}
-                                        variant={page === members.current_page ? 'default' : 'outline'}
+                                        variant={page === histories.current_page ? 'default' : 'outline'}
                                         size="icon"
                                         onClick={() => handlePageChange(page)}
                                     >
                                         {page}
                                     </Button>
                                 ))}
-                            </div>{' '}
+                            </div>
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => handlePageChange(members.current_page + 1)}
-                                disabled={members.current_page === members.last_page}
+                                onClick={() => handlePageChange(histories.current_page + 1)}
+                                disabled={histories.current_page === histories.last_page}
                             >
                                 <ChevronRight className="h-4 w-4" />
-                            </Button>{' '}
-                        </div>{' '}
-                    </div> */}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AppLayout>

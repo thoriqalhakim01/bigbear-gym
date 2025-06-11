@@ -280,64 +280,72 @@ export default function TransactionListing({ flash, transactions, filters }: Pro
                         </div>
                     )}
 
-                    <div className="rounded-md border">
-                        <div className="w-fulloverflow-auto relative">
-                            <table className="w-full caption-bottom text-sm">
-                                <thead className="[&_tr]:border-b">
-                                    <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Transaction Date</th>
-                                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                                        <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Point Added</th>
-                                        <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Price</th>
-                                        <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Payment Method</th>
-                                        <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="[&_tr:last-child]:border-0">
-                                    {transactions.data.map((item) => (
-                                        <tr key={item.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td className="p-4 align-middle">{item.transaction_date}</td>
-                                            <td className="p-4 align-middle">{item.member?.full_name}</td>
-                                            <td className="p-4 text-center align-middle">
-                                                {item.package?.name} - {item.package?.points}
-                                            </td>
-                                            <td className="p-4 text-center align-middle">
-                                                {item.package?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-                                            </td>
-                                            <td className="p-4 text-center align-middle">
-                                                {item.payment_method === 'debit_card'
-                                                    ? 'Debit Card'
-                                                    : item.payment_method === 'bank_transfer'
-                                                      ? 'Bank Transfer'
-                                                      : item.payment_method === 'credit_card'
-                                                        ? 'Credit Card'
-                                                        : item.payment_method === 'qris'
-                                                          ? 'QRIS'
-                                                          : 'Cash'}
-                                            </td>
-                                            <td className="flex items-center justify-end gap-2 p-4 align-middle">
-                                                <ShowTransaction transaction={item} />
-                                                <Button
-                                                    className="dark:focus-visible:ring-green/40 bg-green-500 text-white shadow-xs hover:bg-green-500/90 focus-visible:ring-green-500/20"
-                                                    asChild
-                                                >
-                                                    <Link href={route('transactions.edit', item.id)}>
-                                                        <PencilLine />
-                                                    </Link>
-                                                </Button>
-                                                <DeleteTransaction id={item.id} />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {transactions.data.length === 0 && (
-                                        <tr>
-                                            <td colSpan={6} className="p-4 text-center text-muted-foreground">
-                                                No transactions found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                    <div className="flex flex-col">
+                        <div className="-m-1.5 overflow-x-auto">
+                            <div className="inline-block min-w-full p-1.5 align-middle">
+                                <div className="overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-neutral-700 dark:shadow-gray-900">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <thead className="bg-gray-50 dark:bg-neutral-700">
+                                            <tr className="text-sm">
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
+                                                    Transaction Date
+                                                </th>
+                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Point Added</th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Price</th>
+                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">
+                                                    Payment Method
+                                                </th>
+                                                <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-200 text-sm dark:divide-neutral-700">
+                                            {transactions.data.map((item) => (
+                                                <tr key={item.id} className='text-sm'>
+                                                    <td className="p-4 align-middle">{item.transaction_date}</td>
+                                                    <td className="p-4 align-middle">{item.member?.full_name}</td>
+                                                    <td className="p-4 text-center align-middle">
+                                                        {item.package?.name} - {item.package?.points}
+                                                    </td>
+                                                    <td className="p-4 text-center align-middle">
+                                                        {item.package?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                                                    </td>
+                                                    <td className="p-4 text-center align-middle">
+                                                        {item.payment_method === 'debit_card'
+                                                            ? 'Debit Card'
+                                                            : item.payment_method === 'bank_transfer'
+                                                              ? 'Bank Transfer'
+                                                              : item.payment_method === 'credit_card'
+                                                                ? 'Credit Card'
+                                                                : item.payment_method === 'qris'
+                                                                  ? 'QRIS'
+                                                                  : 'Cash'}
+                                                    </td>
+                                                    <td className="flex items-center justify-end gap-2 p-4 align-middle">
+                                                        <ShowTransaction transaction={item} />
+                                                        <Button
+                                                            className="dark:focus-visible:ring-green/40 bg-green-500 text-white shadow-xs hover:bg-green-500/90 focus-visible:ring-green-500/20"
+                                                            asChild
+                                                        >
+                                                            <Link href={route('transactions.edit', item.id)}>
+                                                                <PencilLine />
+                                                            </Link>
+                                                        </Button>
+                                                        <DeleteTransaction id={item.id} />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {transactions.data.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={6} className="p-4 text-center text-muted-foreground">
+                                                        No transactions found
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center justify-between">
