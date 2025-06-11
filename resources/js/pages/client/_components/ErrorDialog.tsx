@@ -1,16 +1,29 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { AlertCircle, UserPlus } from 'lucide-react';
+import { getErrorColors, getErrorInfo } from '@/lib/errorUtils';
+import { UserPlus, RefreshCw, Phone, Home } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface ErrorDialogProps {
     error: string;
     open: boolean;
     onClose: () => void;
+    onRetry?: () => void;
+    onContactStaff?: () => void;
 }
 
-export default function ErrorDialog({ error, open, onClose }: ErrorDialogProps) {
+export default function ErrorDialog({
+    error,
+    open,
+    onClose,
+    onRetry,
+    onContactStaff
+}: ErrorDialogProps) {
     const [countdown, setCountdown] = useState(15);
+
+    const errorInfo = getErrorInfo(error);
+    const colors = getErrorColors(errorInfo.severity);
+    const IconComponent = errorInfo.icon;
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -40,70 +53,82 @@ export default function ErrorDialog({ error, open, onClose }: ErrorDialogProps) 
         };
     }, [open, onClose]);
 
-    const isPointsError =
-        error.toLowerCase().includes('no available points') || error.toLowerCase().includes('points') || error.toLowerCase().includes('balance');
-
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-xl font-bold text-red-600">
-                        <AlertCircle className="h-6 w-6" />
-                        {isPointsError ? 'Insufficient Points' : 'Access Denied'}
+                    <DialogTitle className={`flex items-center gap-2 text-xl font-bold ${colors.title}`}>
+                        <IconComponent className="h-6 w-6" />
+                        {errorInfo.title}
                     </DialogTitle>
-                    <DialogDescription className="text-red-600/80">
-                        {isPointsError ? "Your account doesn't have enough points for gym access" : 'Unable to process your check-in request'}
+                    <DialogDescription className={colors.description}>
+                        {errorInfo.description}
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+                    {/* Error Details */}
+                    <div className={`rounded-lg border ${colors.border} ${colors.bg} p-4`}>
                         <div className="flex items-start gap-3">
-                            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" />
-                            <div>
-                                <h4 className="mb-1 font-medium text-red-800">{isPointsError ? 'Points Balance Too Low' : 'Check-in Failed'}</h4>
-                                <p className="text-sm text-red-700">{error}</p>
+                            <IconComponent className={`mt-0.5 h-5 w-5 flex-shrink-0 ${colors.icon}`} />
+                            <div className="min-w-0 flex-1">
+                                <h4 className={`mb-1 font-medium ${colors.header}`}>Error Details</h4>
+                                <p className={`text-sm ${colors.text} break-words`}>{error}</p>
                             </div>
                         </div>
                     </div>
 
+                    {/* Next Steps */}
                     <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
                         <div className="flex items-start gap-3">
                             <UserPlus className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-500" />
-                            <div>
+                            <div className="min-w-0 flex-1">
                                 <h4 className="mb-2 font-medium text-blue-800">What to do next?</h4>
                                 <ul className="space-y-1 text-sm text-blue-700">
-                                    {isPointsError ? (
-                                        <>
-                                            <li>• Contact gym staff to top up your points</li>
-                                            <li>• Check your membership status and renewal</li>
-                                            <li>• Verify your payment and subscription plan</li>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <li>• Please contact the gym staff for registration</li>
-                                            <li>• Make sure your RFID card is properly activated</li>
-                                            <li>• Check if you're using the correct RFID card</li>
-                                        </>
-                                    )}
+                                    {errorInfo.nextSteps.map((step, index) => (
+                                        <li key={index} className="break-words">• {step}</li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4">
-                        <div className="text-sm text-muted-foreground">Auto-close in {countdown} seconds</div>
-                        <div className="flex space-x-2">
-                            <Button variant="outline" onClick={onClose}>
-                                Try Again
-                            </Button>
+                    <div className="flex flex-col gap-3 pt-4">
+                        {/* Timer */}
+                        <div className="text-center text-sm text-muted-foreground">
+                            Auto-close in {countdown} seconds
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 justify-center">
+                            {/* Retry Button - Only for retryable errors */}
+                            {errorInfo.isRetryable && onRetry && (
+                                <Button
+                                    variant="outline"
+                                    onClick={onRetry}
+                                    className="flex items-center gap-2 flex-1 min-w-0"
+                                >
+                                    <RefreshCw className="h-4 w-4" />
+                                    Try Again
+                                </Button>
+                            )}
+
+                            {onContactStaff && (
+                                <Button
+                                    className="bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 flex-1 min-w-0"
+                                    onClick={onContactStaff}
+                                >
+                                    <Phone className="h-4 w-4" />
+                                    Contact Staff
+                                </Button>
+                            )}
+
                             <Button
-                                className="bg-blue-600 text-white hover:bg-blue-700"
-                                onClick={() => {
-                                    window.location.href = '/contact';
-                                }}
+                                variant={errorInfo.isRetryable ? "secondary" : "outline"}
+                                onClick={onClose}
+                                className="flex items-center gap-2 flex-1 min-w-0"
                             >
-                                Contact Staff
+                                <Home className="h-4 w-4" />
+                                {errorInfo.isRetryable ? 'Back' : 'Close'}
                             </Button>
                         </div>
                     </div>

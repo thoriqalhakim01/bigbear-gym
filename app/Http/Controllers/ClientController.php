@@ -36,6 +36,14 @@ class ClientController extends Controller
                 ]);
             }
 
+            $alreadyCheckedInToday = $member->history()->whereDate('entry_timestamp', date('Y-m-d'))->exists();
+
+            if ($alreadyCheckedInToday) {
+                return Inertia::render('client/CheckIn', [
+                    'error' => "RFID card '{$cleanRfidUid}' has already checked in today.",
+                ]);
+            }
+
             $currentPoints = $member->points()->first()->balance ?? 0;
 
             if ($currentPoints <= 0) {
