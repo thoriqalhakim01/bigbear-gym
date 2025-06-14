@@ -28,6 +28,7 @@ class PackageController extends Controller
             'name'     => 'required|string|max:255',
             'points'   => 'required|integer|min:0',
             'price'    => 'required|decimal:0,2|min:0',
+            'duration' => 'required|integer|min:0',
         ]);
 
         Package::create($validated);
@@ -42,6 +43,7 @@ class PackageController extends Controller
             'name'     => 'required|string|max:255',
             'points'   => 'required|integer|min:0',
             'price'    => 'required|decimal:0,2|min:0',
+            
         ]);
 
         $option = Package::findOrFail($id);

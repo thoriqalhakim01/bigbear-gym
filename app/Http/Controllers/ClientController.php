@@ -55,6 +55,14 @@ class ClientController extends Controller
                 ]);
             }
 
+            $expirationDate = $member->points()->first()->expiration_date;
+
+            if ($expirationDate < now()) {
+                return Inertia::render('client/CheckIn', [
+                    'error' => "RFID card '{$cleanRfidUid}' has expired. Please contact gym staff for more information.",
+                ]);
+            }
+
             $member->points()->update([
                 'balance' => $currentPoints - 1,
             ]);

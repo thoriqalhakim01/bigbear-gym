@@ -116,7 +116,8 @@ class MemberController extends Controller
 
             if ($isMember) {
                 $member->points()->create([
-                    'balance' => 0,
+                    'balance'         => 0,
+                    'expiration_date' => now(),
                 ]);
             }
 

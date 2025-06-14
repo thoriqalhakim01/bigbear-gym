@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('points');
             $table->bigInteger('price');
+            $table->integer('duration')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

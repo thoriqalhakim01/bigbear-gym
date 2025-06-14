@@ -86,11 +86,13 @@ class TransactionController extends Controller
                 $pointAdded   = $package->points ?? 0;
 
                 $member->points()->update([
-                    'balance' => $currentPoint + $pointAdded,
+                    'balance'         => $currentPoint + $pointAdded,
+                    'expiration_date' => now()->addDays($package->duration),
                 ]);
             } elseif ($member->is_member && ! $member->points) {
                 $member->points()->create([
-                    'balance' => $package->points ?? 0,
+                    'balance'         => $package->points ?? 0,
+                    'expiration_date' => now()->addDays($package->duration),
                 ]);
             }
 

@@ -62,6 +62,7 @@ export interface Point {
     id: number;
     member_id: number;
     balance: number;
+    expiration_date: string;
 }
 
 export interface AttendanceHistory {
@@ -77,6 +78,7 @@ export interface Package {
     name: string;
     points: number;
     price: number;
+    duration: number;
 }
 
 export interface Transaction {

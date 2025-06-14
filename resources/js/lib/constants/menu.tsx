@@ -22,11 +22,11 @@ export const mainNavItems: NavItem[] = [
         href: '/dashboard/packages',
         icon: Menu,
     },
-    {
-        title: 'Report & Analytics',
-        href: '/dashboard/report-analytics',
-        icon: ChartLine,
-    },
+    // {
+    //     title: 'Report & Analytics',
+    //     href: '/dashboard/report-analytics',
+    //     icon: ChartLine,
+    // },
 ];
 
 export const footerNavItems: NavItem[] = [

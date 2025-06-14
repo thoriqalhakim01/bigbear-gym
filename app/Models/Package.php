@@ -15,6 +15,7 @@ class Package extends Model
         'name',
         'points',
         'price',
+        'duration',
     ];
 
     public function transactions()

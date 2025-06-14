@@ -15,6 +15,7 @@ type CreateForm = {
     name: string;
     points: number | '';
     price: number | '';
+    duration: number | '';
 };
 
 export default function CreatePackage() {
@@ -27,6 +28,7 @@ export default function CreatePackage() {
         name: '',
         points: '',
         price: '',
+        duration: '',
     });
 
     const handleSubmit: FormEventHandler = (e) => {
@@ -106,6 +108,21 @@ export default function CreatePackage() {
                             placeholder="e.g. 25000"
                         />
                         <InputError message={errors.price} className="mt-2" />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="duration">Expires After (days)</Label>
+                        <Input
+                            id="duration"
+                            type="text"
+                            required
+                            tabIndex={3}
+                            value={data.duration}
+                            onChange={(e) => setData('duration', parseFloat(e.target.value) || 0)}
+                            disabled={processing}
+                            placeholder="e.g. 60 (days)"
+                        />
+                        <InputError message={errors.duration} className="mt-2" />
                     </div>
 
                     <DialogFooter className="gap-2">

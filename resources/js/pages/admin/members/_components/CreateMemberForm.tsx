@@ -100,7 +100,7 @@ export default function CreateMemberForm() {
                         placeholder="e.g. 8123456789 (without 0)"
                         className="pl-13"
                     />
-                    <div className="absolute top-0 left-0 flex h-9 items-center border-r px-2">
+                    <div className="absolute top-0 left-0 flex items-center px-2 border-r h-9">
                         <p className="text-sm text-muted-foreground">+62</p>
                     </div>
                 </div>
@@ -119,10 +119,10 @@ export default function CreateMemberForm() {
                             type="button"
                         >
                             {data.registration_date ? format(new Date(data.registration_date), 'PPP') : <span>Pick a date</span>}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                    <PopoverContent className="w-auto p-0 overflow-hidden" align="start">
                         <Calendar
                             mode="single"
                             selected={new Date(data.registration_date)}

@@ -13,6 +13,7 @@ export interface ErrorInfo {
 export enum ErrorType {
     INSUFFICIENT_POINTS = 'insufficient_points',
     ALREADY_CHECKED_IN = 'already_checked_in',
+    HAS_EXPIRED = 'has_expired',
     MEMBER_NOT_FOUND = 'member_not_found',
     INVALID_RFID = 'invalid_rfid',
     SYSTEM_ERROR = 'system_error',
@@ -28,6 +29,10 @@ export function detectErrorType(errorMessage: string): ErrorType {
 
     if (message.includes('already checked in')) {
         return ErrorType.ALREADY_CHECKED_IN;
+    }
+
+    if (message.includes('has expired')) {
+        return ErrorType.HAS_EXPIRED;
     }
 
     if (message.includes('is not registered') || message.includes('not found')) {
@@ -72,6 +77,20 @@ export function getErrorInfo(errorMessage: string): ErrorInfo {
                 'Come back tomorrow for your next session',
                 'Contact staff if you believe this is an error',
                 'Check your check-in history for confirmation',
+            ],
+            isRetryable: false,
+            severity: 'warning',
+        },
+
+        [ErrorType.HAS_EXPIRED]: {
+            title: 'Membership Expired',
+            description: 'Your membership has expired, please renew',
+            icon: AlertCircle,
+            nextSteps: [
+                'Your membership has expired, please renew',
+                'Contact gym staff for renewal',
+                'Check your membership status and renewal',
+                'Ask about available membership packages',
             ],
             isRetryable: false,
             severity: 'warning',
