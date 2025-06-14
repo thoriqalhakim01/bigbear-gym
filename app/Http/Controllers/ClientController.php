@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -27,6 +28,8 @@ class ClientController extends Controller
             }
 
             $cleanRfidUid = trim($rfid_uid);
+
+            $staff = Auth::user()->id;
 
             $member = Member::with('points')->where('rfid_uid', $cleanRfidUid)->first();
 
@@ -57,6 +60,7 @@ class ClientController extends Controller
             ]);
 
             $member->history()->create([
+                'staff_id'        => $staff,
                 'entry_timestamp' => now(),
                 'points_deducted' => 1,
             ]);

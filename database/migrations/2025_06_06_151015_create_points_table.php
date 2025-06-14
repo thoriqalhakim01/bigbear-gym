@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('member_id')->references('id')->on('members')->onDelete('cascade');
             $table->integer('balance');
+            $table->date('expiration_date');
             $table->timestamps();
             $table->softDeletes();
         });

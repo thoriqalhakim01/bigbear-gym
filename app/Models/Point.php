@@ -13,6 +13,7 @@ class Point extends Model
     protected $fillable = [
         'member_id',
         'balance',
+        'expiration_date',
     ];
 
     public function member()
