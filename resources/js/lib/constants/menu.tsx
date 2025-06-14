@@ -1,5 +1,5 @@
 import { type NavItem } from '@/types';
-import { ArrowLeftRight, BookOpen, ChartLine, Folder, LayoutGrid, Menu, Settings2, Users } from 'lucide-react';
+import { AppWindow, ArrowLeftRight, BookOpen, ChartLine, Folder, LayoutGrid, Menu, Settings2, Users } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
     {
@@ -31,13 +31,8 @@ export const mainNavItems: NavItem[] = [
 
 export const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
+        title: 'Client Page',
+        href: '/check-in',
+        icon: AppWindow
+    }
 ];

@@ -3,23 +3,19 @@ import ClientHeaderLayout from './client/client-header-layout';
 
 export default function ClientLayout({ children }: PropsWithChildren) {
     return (
-        <div className="relative min-h-screen overflow-hidden bg-black">
-            <div className="absolute inset-0">
-                <img src="/gym-bg.jpg" alt="Gym Background" className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
-            </div>
-            <div className="absolute z-20 w-full">
+        <div className="flex flex-col flex-1 w-full h-screen light bg-background">
+            <div className="w-full px-4 mx-auto h-24z lg:h-24 max-w-7xl lg:px-0">
                 <ClientHeaderLayout />
             </div>
-            <div className="relative z-10 flex min-h-screen flex-col">
-                <main className="flex flex-1 items-center justify-center">
-                    <div className="max-w-4xl text-center">
-                        <h1 className="font-display text-7xl leading-tight font-bold text-white">
-                            Made By Athletes
-                            <br />
-                            <span className="text-white">For Athletes</span>
-                        </h1>
-                        <div className="text-white">{children}</div>
+            <div className="flex flex-col w-full h-full mx-auto max-w-7xl">
+                <main className="flex flex-col flex-1 my-6 space-y-8">
+                    <div className="text-center">
+                        <h1 className="text-5xl font-bold tracking-tighter">FORGE YOUR STRENGTH.</h1>
+                        <h2 className="text-5xl font-bold tracking-tighter text-[#777777]">Unleash the beast within.</h2>
+                    </div>
+                    {children}
+                    <div className="relative h-[57vh] w-full">
+                        <img src="/gym-bg.jpg" alt="Gym background" className="object-cover w-full h-full rounded-xl" />
                     </div>
                 </main>
             </div>

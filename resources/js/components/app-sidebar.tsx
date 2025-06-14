@@ -1,9 +1,10 @@
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { mainNavItems } from '@/lib/constants/menu';
+import { footerNavItems, mainNavItems } from '@/lib/constants/menu';
 import { Link } from '@inertiajs/react';
 import AppLogo from './app-logo';
+import { NavFooter } from './nav-footer';
 
 export function AppSidebar() {
     return (
@@ -25,7 +26,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
+                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

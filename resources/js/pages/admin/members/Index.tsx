@@ -152,8 +152,8 @@ export default function MemberListing({ flash, members, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="flex flex-1 items-center justify-between">
+            <div className="flex flex-col gap-4 p-4 overflow-x-auto rounded-xl">
+                <div className="flex items-center justify-between flex-1">
                     <h1 className="text-2xl font-semibold">Member Listing</h1>
                     <Button asChild>
                         <Link href="/dashboard/members/create">
@@ -164,10 +164,9 @@ export default function MemberListing({ flash, members, filters }: Props) {
                 </div>
 
                 <div className="flex flex-col space-y-4">
-                    {/* Search and Filters */}
                     <div className="flex items-center justify-between gap-4">
-                        <div className="flex w-full items-center gap-2">
-                            <form onSubmit={handleSearch} className="max-w-md flex-1">
+                        <div className="flex items-center w-full gap-2">
+                            <form onSubmit={handleSearch} className="flex-1 max-w-md">
                                 <div className="relative max-h-9">
                                     <Input
                                         placeholder="Search member....."
@@ -175,7 +174,7 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
-                                    <div className="absolute top-0 left-2 flex h-full items-center">
+                                    <div className="absolute top-0 flex items-center h-full left-2">
                                         <Search size={16} className="text-muted-foreground" />
                                     </div>
                                 </div>
@@ -188,7 +187,7 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                 <Filter size={16} />
                                 <span className="hidden sm:inline">Filters</span>
                                 {hasActiveFilters && (
-                                    <Badge variant="secondary" className="ml-1 h-5 w-5 rounded-full p-0 text-xs">
+                                    <Badge variant="secondary" className="w-5 h-5 p-0 ml-1 text-xs rounded-full">
                                         !
                                     </Badge>
                                 )}
@@ -227,7 +226,7 @@ export default function MemberListing({ flash, members, filters }: Props) {
                     </div>
 
                     {showFilters && (
-                        <div className="rounded-lg border bg-muted/50 p-4">
+                        <div className="p-4 border rounded-lg bg-muted/50">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium">Status</Label>
@@ -253,10 +252,10 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                                 type="button"
                                             >
                                                 {startDate ? format(new Date(startDate), 'PPP') : <span>Pick start date</span>}
-                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                                        <PopoverContent className="w-auto p-0 overflow-hidden" align="start">
                                             <Calendar
                                                 mode="single"
                                                 selected={startDate ? new Date(startDate) : undefined}
@@ -284,10 +283,10 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                                 type="button"
                                             >
                                                 {endDate ? format(new Date(endDate), 'PPP') : <span>Pick end date</span>}
-                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                                        <PopoverContent className="w-auto p-0 overflow-hidden" align="start">
                                             <Calendar
                                                 mode="single"
                                                 selected={endDate ? new Date(endDate) : undefined}
@@ -306,7 +305,7 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                 </div>
                             </div>
 
-                            <div className="mt-4 flex justify-end gap-2">
+                            <div className="flex justify-end gap-2 mt-4">
                                 <Button variant="outline" onClick={() => setShowFilters(false)}>
                                     Cancel
                                 </Button>
@@ -319,10 +318,10 @@ export default function MemberListing({ flash, members, filters }: Props) {
                         <div className="flex flex-wrap items-center gap-2">
                             <span className="text-sm text-muted-foreground">Active filters:</span>
                             {filters.status !== 'all' && (
-                                <Badge variant="secondary" className="flex h-6 items-center gap-1">
+                                <Badge variant="secondary" className="flex items-center h-6 gap-1">
                                     Status: {filters.status === 'member' ? 'Active Member' : 'Non-Member'}
                                     <button
-                                        className="flex cursor-pointer items-center hover:text-destructive"
+                                        className="flex items-center cursor-pointer hover:text-destructive"
                                         onClick={() => {
                                             setStatusFilter('all');
                                             router.get(
@@ -340,10 +339,10 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                 </Badge>
                             )}
                             {filters.start_date && (
-                                <Badge variant="secondary" className="flex h-6 items-center gap-1">
+                                <Badge variant="secondary" className="flex items-center h-6 gap-1">
                                     From: {new Date(filters.start_date).toLocaleDateString()}
                                     <button
-                                        className="flex cursor-pointer items-center hover:text-destructive"
+                                        className="flex items-center cursor-pointer hover:text-destructive"
                                         onClick={() => {
                                             setStartDate('');
                                             const params = new URLSearchParams(window.location.search);
@@ -359,10 +358,10 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                 </Badge>
                             )}
                             {filters.end_date && (
-                                <Badge variant="secondary" className="flex h-6 items-center gap-1">
+                                <Badge variant="secondary" className="flex items-center h-6 gap-1">
                                     To: {new Date(filters.end_date).toLocaleDateString()}
                                     <button
-                                        className="flex cursor-pointer items-center hover:text-destructive"
+                                        className="flex items-center cursor-pointer hover:text-destructive"
                                         onClick={() => {
                                             setEndDate('');
                                             const params = new URLSearchParams(window.location.search);
@@ -383,17 +382,17 @@ export default function MemberListing({ flash, members, filters }: Props) {
                     <div className="flex flex-col">
                         <div className="-m-1.5 overflow-x-auto">
                             <div className="inline-block min-w-full p-1.5 align-middle">
-                                <div className="overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-neutral-700 dark:shadow-gray-900">
+                                <div className="overflow-hidden border border-gray-200 rounded-lg shadow-xs dark:border-neutral-700 dark:shadow-gray-900">
                                     <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                                         <thead className="bg-gray-50 dark:bg-neutral-700">
                                             <tr className="text-sm">
-                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">RFID UID</th>
-                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
-                                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Phone</th>
-                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Status</th>
-                                                <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Points</th>
-                                                <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+                                                <th className="h-12 px-4 font-medium text-left align-middle text-muted-foreground">Name</th>
+                                                <th className="h-12 px-4 font-medium text-left align-middle text-muted-foreground">RFID UID</th>
+                                                <th className="h-12 px-4 font-medium text-left align-middle text-muted-foreground">Email</th>
+                                                <th className="h-12 px-4 font-medium text-left align-middle text-muted-foreground">Phone</th>
+                                                <th className="h-12 px-4 font-medium text-center align-middle text-muted-foreground">Status</th>
+                                                <th className="h-12 px-4 font-medium text-center align-middle text-muted-foreground">Points</th>
+                                                <th className="h-12 px-4 font-medium text-right align-middle text-muted-foreground">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
@@ -407,14 +406,14 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                                         {member.is_member ? (
                                                             <Badge
                                                                 variant={'secondary'}
-                                                                className="bg-green-600 px-2 py-1 text-green-100 dark:bg-green-600"
+                                                                className="px-2 py-1 text-green-100 bg-green-600 dark:bg-green-600"
                                                             >
                                                                 Active Member
                                                             </Badge>
                                                         ) : (
                                                             <Badge
                                                                 variant={'secondary'}
-                                                                className="bg-red-600 px-2 py-1 text-red-100 dark:bg-red-600"
+                                                                className="px-2 py-1 text-red-100 bg-red-600 dark:bg-red-600"
                                                             >
                                                                 Non-Member
                                                             </Badge>
@@ -473,7 +472,7 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                 onClick={() => handlePageChange(members.current_page - 1)}
                                 disabled={members.current_page === 1}
                             >
-                                <ChevronLeft className="h-4 w-4" />
+                                <ChevronLeft className="w-4 h-4" />
                             </Button>
                             <div className="flex items-center space-x-1">
                                 {Array.from({ length: members.last_page }, (_, i) => i + 1).map((page) => (
@@ -493,7 +492,7 @@ export default function MemberListing({ flash, members, filters }: Props) {
                                 onClick={() => handlePageChange(members.current_page + 1)}
                                 disabled={members.current_page === members.last_page}
                             >
-                                <ChevronRight className="h-4 w-4" />
+                                <ChevronRight className="w-4 h-4" />
                             </Button>
                         </div>
                     </div>

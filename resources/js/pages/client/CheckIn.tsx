@@ -81,7 +81,6 @@ export default function CheckIn({ member, error, success }: Props) {
                     setIsLoading(false);
                 },
                 onSuccess: () => {
-                    // Clear any previous error states
                     setShowErrorDialog(false);
                 },
             },
@@ -135,13 +134,8 @@ export default function CheckIn({ member, error, success }: Props) {
     return (
         <ClientLayout>
             <Head title="Check In" />
-            <div className="w-full space-y-6 text-center">
-                <div className="space-y-2">
-                    <h1 className="text-2xl font-bold text-white">Check In</h1>
-                    <p className="text-white/80">Enter your RFID UID below or tap your member card to check in.</p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-xl items-center gap-4">
+            <div className="w-full max-w-md mx-auto">
+                <form onSubmit={handleSubmit} className="flex items-center w-full gap-4">
                     <Input
                         id="rfid_uid"
                         name="rfid_uid"
@@ -149,7 +143,7 @@ export default function CheckIn({ member, error, success }: Props) {
                         placeholder="Enter RFID UID or tap card..."
                         value={value}
                         onChange={handleChange}
-                        className="w-full border-white/20 bg-white/50 text-white placeholder:text-black/60 focus:border-yellow-500 focus:ring-yellow-500"
+                        className="w-full"
                         autoComplete="off"
                         autoFocus
                         disabled={isLoading}
